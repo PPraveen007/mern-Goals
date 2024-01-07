@@ -3,6 +3,10 @@ const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 
+//des     Register new user
+//route   POST /api/users
+//access  Public
+
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -31,7 +35,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (user) {
     res.status(201).json({
-      _id: user._id,
+      _id: user.id,
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
@@ -40,9 +44,11 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Invalid data");
   }
-
-  res.json({ message: "Register User" });
 });
+
+//des     Authenticate a user
+//route   POST /api/users/login
+//access  Public
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -53,7 +59,7 @@ const loginUser = asyncHandler(async (req, res) => {
   //ckeck for condition mail and password
   if (user && (await bcrypt.compare(password, user.password))) {
     res.json({
-      id: user._id,
+      _id: user.id,
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
@@ -64,8 +70,12 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+//des     get user data
+//route   get  /api/users/me
+//access  Private
+
 const getMe = asyncHandler(async (req, res) => {
-  res.status(200).json(req.user)
+  res.status(200).json(req.user);
 });
 
 //generate JWT

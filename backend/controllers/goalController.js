@@ -1,12 +1,21 @@
 const asyncHandler = require("express-async-handler");
 const Goal = require("../models/goalModel");
 const User = require("../models/userModel");
+    
+
+//des     @ Get goals 
+//route   GET /api/goals
+//access  Private
 
 const getGoals = asyncHandler(async (req, res) => {
   const goals = await Goal.find({ user: req.user.id });
 
   res.status(200).json(goals);
 });
+
+//des     @ SEt goal
+//route   POST /api/goals
+//access  Private
 
 const setGoal = asyncHandler(async (req, res) => {
   if (!req.body.text) {
@@ -21,6 +30,10 @@ const setGoal = asyncHandler(async (req, res) => {
 
   res.status(200).json(goal);
 });
+
+//des     @ Update goal
+//route   PUT /api/goals/:ID
+//access  Private
 
 const updateGoal = asyncHandler(async (req, res) => {
   const goal = await Goal.findById(req.params.id);
@@ -43,11 +56,15 @@ const updateGoal = asyncHandler(async (req, res) => {
   }
 
   const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, {
-    new: true, // it means it will create a goa lif it doesn't exist
+    new: true, // it means it will create a goal if it doesn't exist
   });
 
   res.status(200).json(updatedGoal);
 });
+
+//des     @ DELETE goal
+//route   DELETE /api/goals/:ID
+//access  Private
 
 const deleteGoal = asyncHandler(async (req, res) => {
   const goal = await Goal.findById(req.params.id);

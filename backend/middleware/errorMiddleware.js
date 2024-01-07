@@ -10,5 +10,5 @@ const errorhandler = (err, req, res, next) => {
 };
 
 module.exports = {
-  errorhandler,
+  errorhandler
 };
